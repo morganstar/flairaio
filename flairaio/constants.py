@@ -12,6 +12,8 @@ class Endpoint(StrEnum):
     AUTH_URL = '/oauth2/token'
     HVACS_URL = '/api/hvac-units'
     PUCKS_URL = '/api/pucks'
+    REMOTE_SENSORS_URL = '/api/remote-sensors'
+    REMOTE_SENSOR_READINGS_URL = '/api/remote-sensor-readings'
     ROOMS_URL = '/api/rooms'
     STRUCTURES_URL = '/api/structures'
     THERMOSTATS_URL = '/api/thermostats'
@@ -29,7 +31,7 @@ class Header(StrEnum):
     ACCEPT = 'application/json'
     CLIENT_ID = 'client_id'
     CLIENT_SECRET = 'client_secret'
-    SCOPES = 'pucks.view+pucks.edit+structures.view+structures.edit+thermostats.view+users.view+users.edit+vents.view+vents.edit'
+    SCOPES = 'pucks.view+pucks.edit+sensors.view+sensors.edit+structures.view+structures.edit+thermostats.view+users.view+users.edit+vents.view+vents.edit'
     GRANT_TYPE = 'client_credentials'
 
 
