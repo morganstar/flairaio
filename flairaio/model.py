@@ -172,3 +172,12 @@ class RemoteSensor:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+
+@dataclass
+class RemoteSensorReadings:
+    """ Dataclass for telemetry from 3rd party remote sensors.
+     NOTE This feature is not documented and is not likely to behave as expected """
+
+    id: str
+    attributes: dict[str, Any]
+    relationships: dict[str, Any]

@@ -15,7 +15,7 @@ from flairaio.constants import (
     TIMEOUT,
 )
 from flairaio.exceptions import FlairError, FlairAuthError
-from flairaio.model import (FlairData, HVACUnit, HVACUnits, Puck, Pucks, RemoteSensor, RemoteSensors, Room,
+from flairaio.model import (FlairData, HVACUnit, HVACUnits, Puck, Pucks, RemoteSensor, RemoteSensors, RemoteSensorReadings, Room,
                             Rooms, Schedule, Structure, Structures, Thermostat,
                             Thermostats, User, Users, Vent, Vents, Zone, Zones,)
 
@@ -318,6 +318,21 @@ class FlairClient:
             id=remote_sensor['data']['id'],
             attributes=remote_sensor['data']['attributes'],
             relationships=remote_sensor['data']['relationships'],
+        )
+
+    async def get_remote_sensor_readings(self, remote_sensor_id: str) -> RemoteSensorReadings | None:
+        """Get telemetry for a remote sensor
+        NOTE this feature is undocumented and may not behave as expected.
+        Currently just returns None for IDs expected to exist and server error for other IDs."""
+
+        url = f'{Endpoint.REMOTE_SENSOR_READINGS_URL}/{remote_sensor_id}'
+        remote_sensor_readings = await self._get(url)
+        if remote_sensor_readings is None:
+            return remote_sensor_readings
+        return RemoteSensorReadings(
+            id=remote_sensor_readings['data']['id'],
+            attributes=remote_sensor_readings['data']['attributes'],
+            relationships=remote_sensor_readings['data']['relationships'],
         )
 
     async def get_flair_data(self) -> FlairData:
