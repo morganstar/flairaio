@@ -15,7 +15,7 @@ from flairaio.constants import (
     TIMEOUT,
 )
 from flairaio.exceptions import FlairError, FlairAuthError
-from flairaio.model import (FlairData, HVACUnit, HVACUnits, Puck, Pucks, Room,
+from flairaio.model import (FlairData, HVACUnit, HVACUnits, Puck, Pucks, RemoteSensor, RemoteSensors, Room,
                             Rooms, Schedule, Structure, Structures, Thermostat,
                             Thermostats, User, Users, Vent, Vents, Zone, Zones,)
 
@@ -286,6 +286,38 @@ class FlairClient:
             id=zone['data']['id'],
             attributes=zone['data']['attributes'],
             relationships=zone['data']['relationships'],
+        )
+
+    async def get_remote_sensors(self) -> RemoteSensors:
+        """Get all remote sensors.
+        NOTE this feature is undocumented and probably will not work as expected, inclusion is for testing purposes."""
+
+        fetched_remote_sensors = await self._get(Endpoint.REMOTE_SENSORS_URL)
+        remote_sensors: dict[str, RemoteSensor] = {}
+
+        if fetched_remote_sensors['data']:
+            for remote_sensor in fetched_remote_sensors['data']:
+                remote_sensors[remote_sensor['id']] = RemoteSensor(
+                    id=remote_sensor['id'],
+                    attributes=remote_sensor['attributes'],
+                    relationships=remote_sensor['relationships'],
+                )
+        return RemoteSensors(remote_sensors=remote_sensors)
+
+
+    async def get_remote_sensor(self, remote_sensor_id: str) -> RemoteSensor | None:
+        """Get a single remote sensor.
+        NOTE this feature is undocumented and may not behave as expected.
+        Currently just seems to return None for IDs expected to exist."""
+
+        url = f'{Endpoint.REMOTE_SENSORS_URL}/{remote_sensor_id}'
+        remote_sensor = await self._get(url)
+        if remote_sensor is None:
+            return remote_sensor
+        return RemoteSensor(
+            id=remote_sensor['data']['id'],
+            attributes=remote_sensor['data']['attributes'],
+            relationships=remote_sensor['data']['relationships'],
         )
 
     async def get_flair_data(self) -> FlairData:

@@ -157,3 +157,18 @@ class Schedule:
     id: str
     attributes: dict[str, Any]
     relationships: dict[str, Any]
+
+@dataclass
+class RemoteSensors:
+    """ Dataclass for 3rd party remote sensors """
+
+    remote_sensors: dict[str, RemoteSensor]
+
+@dataclass
+class RemoteSensor:
+    """ Dataclass for 3rd party remote sensor. NOTE This feature is not documented and may have other capabilities or
+    not behave as expected """
+
+    id: str
+    attributes: dict[str, Any]
+    relationships: dict[str, Any]
